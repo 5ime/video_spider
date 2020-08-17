@@ -3,28 +3,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>短视频去水印解析 - Nico实验室</title>
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="assets/css/main.css">
   <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
-
-  <!-- Wrapper -->
     <div id="wrapper">
-
-      <!-- Main -->
         <section id="main">
           <div>
-            <span class="logo"><img src="https://q1.qlogo.cn/g?b=qq&k=wb0UCwMIL5z412cIvmVUOw&s=140"></span>
+            <span class="logo">
+                <img src="https://q1.qlogo.cn/g?b=qq&k=wb0UCwMIL5z412cIvmVUOw&s=140">
+            </span>
           </div>
-          
-          <form action="" method="post">
+          <form method="post">
                 <div id="myDiv1">
                   <h1>短视频去水印解析</h1>
-                  <p>抖音/皮皮虾/火山/微视/微博/绿洲/最右/轻视频/ins/哔哩哔哩/快手/全民</p>
+                  <p>抖音/皮皮虾/火山/微视/微博/绿洲/最右/轻视频/ins/哔哩哔哩/快手/全民/皮皮搞笑</p>
                 </div>
                 <input type="text" placeholder="输入视频链接" id="input1" class="longurl">
                 <input class="btn"  type="button" onclick="setValue()" value="解析">
-
           </form>
             <div class="down">
               <p id="form-title"></p>
@@ -34,10 +30,8 @@
              </div>
             <pre><code><div id="myDiv"></div></code></pre>
         </section>
-
-      <!-- Footer -->
         <footer id="footer">
-          <span><a>那朵沉香的三月鲜花，只为你灿烂绽放</a></span>
+          <span><a>天若有情天亦老 人间正道是沧桑</a></span>
         </footer>
     </div>
     <script>
@@ -45,19 +39,15 @@
       {
       var v =  document.getElementById("input1").value;//取得参数
           var xmlhttp;
-          if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp=new XMLHttpRequest();
-            }
-          else
-            {// code for IE6, IE5
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
+          if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();}
+          else{// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
           xmlhttp.open("GET","https://tenapi.cn/video?url="+v,false);
           xmlhttp.send();
           document.getElementById("myDiv").innerHTML=xmlhttp.responseText;//获取数据
   　      var jsonObj = JSON.parse(xmlhttp.responseText);  // 初始化！！！
-      //document.getElementById("input1").value= jsonObj.url; //注释解析
+        //document.getElementById("input1").value= jsonObj.url; //注释解析
           document.getElementById("form-title").innerHTML = jsonObj.title; 
           document.getElementById("form-video").href = jsonObj.url; 
           document.getElementById("form-cover").href = jsonObj.cover; 
@@ -72,5 +62,5 @@ var _hmt = _hmt || [];
   var s = document.getElementsByTagName("script")[0]; 
   s.parentNode.insertBefore(hm, s);
 })();
-</script
+</script>
 </body></html>
