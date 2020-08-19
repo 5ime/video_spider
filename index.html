@@ -1,58 +1,52 @@
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>短视频去水印解析 - Nico实验室</title>
-  <link rel="stylesheet" href="main.css">
-  <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>短视频去水印解析 - Nico实验室</title>
+<link rel="stylesheet" href="main.css">
+<script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
-    <div id="wrapper">
-        <section id="main">
-          <div>
-            <span class="logo">
-                <img src="https://q1.qlogo.cn/g?b=qq&k=wb0UCwMIL5z412cIvmVUOw&s=140">
-            </span>
-          </div>
-          <form method="post">
-                <div id="myDiv1">
-                  <h1>短视频去水印解析</h1>
-                  <p>抖音/皮皮虾/火山/微视/微博/绿洲/最右/轻视频/ins/哔哩哔哩/快手/全民/皮皮搞笑</p>
-                </div>
-                <input type="text" placeholder="输入视频链接" id="input1" class="longurl">
-                <input class="btn"  type="button" onclick="setValue()" value="解析">
-          </form>
-            <div class="down">
-              <p id="form-title"></p>
-              <a id="form-cover" href="" target="_blank" download="video">下载封面</a>
-              <a id="form-video" href="" target="_blank" download="video">下载视频</a>
-              <a id="form-music" href="" target="_blank" download="video">下载音乐(抖音)</a>
-             </div>
-            <pre><code><div id="myDiv"></div></code></pre>
-        </section>
-        <footer id="footer">
-          <span><a>天若有情天亦老 人间正道是沧桑</a></span>
-        </footer>
+<div id="wrapper">
+	<section id="main">
+    <div>
+      <span class="logo">
+      <img src="https://q1.qlogo.cn/g?b=qq&k=wb0UCwMIL5z412cIvmVUOw&s=140">
+      </span>
     </div>
-    <script>
-      function  setValue()
-      {
-      var v =  document.getElementById("input1").value;//取得参数
-          var xmlhttp;
-          if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp=new XMLHttpRequest();}
-          else{// code for IE6, IE5
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
-          xmlhttp.open("GET","https://tenapi.cn/video?url="+v,false);
-          xmlhttp.send();
-          document.getElementById("myDiv").innerHTML=xmlhttp.responseText;//获取数据
-  　      var jsonObj = JSON.parse(xmlhttp.responseText);  // 初始化！！！
-        //document.getElementById("input1").value= jsonObj.url; //注释解析
-          document.getElementById("form-title").innerHTML = jsonObj.title; 
-          document.getElementById("form-video").href = jsonObj.url; 
-          document.getElementById("form-cover").href = jsonObj.cover; 
-          document.getElementById("form-music").href = jsonObj.music; 
+    <form method="post">
+      <div id="myDiv1">
+        <h1>短视频去水印解析</h1>
+        <p>
+          抖音/皮皮虾/火山/微视/微博/绿洲/最右/轻视频/instagram/哔哩哔哩/快手/全民小视频/皮皮搞笑
+        </p>
+      </div>
+      <input type="text" placeholder="请粘贴视频链接 不要包含文字" id="input1" class="longurl">
+      <input class="btn" type="button" onclick="setValue()" value="解析">
+    </form>
+	  <div class="down"></div>
+    <pre><code><div id="myDiv"></div></code></pre>
+	</section>
+<footer id="footer">
+	<span><script src="https://tenapi.cn/yiyan/?format=js"></script></span>
+</footer>
+</div>
+<script>
+function  setValue(){
+var v =  document.getElementById("input1").value;
+    var xmlhttp;
+    if(window.XMLHttpRequest){
+      xmlhttp=new XMLHttpRequest();
       }
+    else{// code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
+    xmlhttp.open("GET","https://tenapi.cn/video?url="+v,false);
+    xmlhttp.send();
+    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+　  var jsonObj = JSON.parse(xmlhttp.responseText); 
+    $("#media").html('<source id="v1" src="'+jsonObj.url+'" type="video/webm">');
+    $(".down").html('<p id="form-title">'+jsonObj.title+'</p><a id="form-cover" href="'+jsonObj.cover+'" target="_blank" download="video">下载封面</a><a id="form-video" href="'+jsonObj.url+'" target="_blank" download="video">下载视频</a><a id="form-music" href="'+jsonObj.music+'" target="_blank" download="video">下载音乐(抖音)</a>');
+}
 </script>
 <script>
 var _hmt = _hmt || [];
@@ -63,4 +57,5 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
-</body></html>
+</body>
+</html>
