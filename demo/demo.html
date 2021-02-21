@@ -104,7 +104,7 @@ if(code == '200'){
   mdui.snackbar({
   message: '解析成功'
 });
-$(".down").html('<h4>'+jsonObj.data.title+' </h4><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.cover+'" target="_blank" download="video">下载封面</a><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.url+'" target="_blank" download="video">下载视频</a><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.music+'" target="_blank" download="video">下载音乐(抖音)</a>');
+$(".down").html('<h4>'+jsonObj.data.title+' </h4><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.cover+'" target="_blank" download="video">下载封面</a><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.url+'" target="_blank" download="video">下载视频</a><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.music.url+'" target="_blank" download="video">下载音乐(抖音)</a>');
 }else{
   mdui.snackbar({
   message: '解析失败,视频不存在或者链接不正确'
