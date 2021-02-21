@@ -97,10 +97,11 @@ class Video
     public function weibo($url){
         if (strpos($url,'show?fid=') != false){
             preg_match('/fid=(.*)/',$url,$id);
+            $arr = json_decode($this->curl('https://video.h5.weibo.cn/s/video/object?object_id='.$id[1]),true);
         } else {
-            preg_match('/show\/(.*)\?from/',$url,$id);
+            preg_match('/\d+\:\d+/',$url,$id);
+            $arr = json_decode($this->curl('https://video.h5.weibo.cn/s/video/object?object_id='.$id[0]),true);
         }
-        $arr = json_decode($this->curl('https://video.h5.weibo.cn/s/video/object?object_id='.$id[1]),true);
         $arr = array(
             'code' => 200,
             'msg' => '解析成功',
