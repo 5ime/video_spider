@@ -3,7 +3,7 @@ header('Access-Control-Allow-Origin:*');
 header('Content-type: application/json');
 ini_set('display_errors','off');
 error_reporting(E_ALL || ~E_NOTICE);
-require 'demo.php';
+require 'src/video_spider.php';
 $url = $_REQUEST['url'];
 $id = $_REQUEST['id'];
 $basai_id = $_REQUEST['data'];
