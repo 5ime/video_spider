@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+<meta name="renderer" content="webkit"/>
+<meta name="force-rendering" content="webkit"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<title>Demo</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/css/mdui.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+<style>
+::selection {
+  background: rgba(0,149,255,.1);
+}
+body:before{
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: .3;
+  z-index: -1;
+  content: "";
+  position: fixed;
+  background-image: linear-gradient( 135deg, #CE9FFC 10%, #7367F0 100%);
+}
+.mdui-textfield-input{
+  float: left;
+  width: 75%;
+  text-transform: none;
+}
+.mdui-btn{
+  width: 25%;
+}
+.mdui-container {
+  max-width: 900px;
+  margin-top: 6em;
+  margin-bottom: 4em;
+}
+.mdui-btn, .mdui-fab {
+  min-width: 0px;
+}
+.mdui-card{
+  opacity: .8;
+  padding: 2em;;
+  border-radius: 6px;
+}
+.down .mdui-btn{
+  width: auto;
+  margin-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+p{
+    opacity: .8;
+}
+.mdui-card-content{
+    padding: 16px 0 0 0;
+}
+</style>
+<main class="mdui-container">
+<div class="mdui-card">
+	<img class="mdui-img-circle mdui-center" style="width: 150px;" src="https://cdn.jsdelivr.net/gh/5ime/img/avatar.jpg"/>
+  <h1 class='mdui-text-center'>在线短视频去水印解析</h1>
+  <div class="mdui-typo">
+    <p><strong>目前支持 </strong>抖音/皮皮虾/火山/微视/微博/绿洲/最右/轻视频/快手/全民小视频/皮皮搞笑/巴塞电影/陌陌/Before避风/开眼/Vue Vlog/小咖秀</p>
+    <p><strong>温馨提示 </strong>粘贴视频地址时<u>无需删除文案</u><small> 但如果视频链接正确但解析失败请删掉文案后重试</small></p>
+    <hr/>
+  </div>
+<div class="mdui-card-content mdui-typo">
+	<div class="mdui-textfield mdui-textfield-floating-label">
+		<input class="mdui-textfield-input" type="text" id="url" placeholder="请粘贴视频分享地址" required/>
+		<div class="mdui-textfield-error">
+			需要解析的视频地址不能为空
+		</div>
+		<button class="mdui-btn mdui-color-theme-accent mdui-ripple" onclick="setValue()">解析</button>
+	</div>
+</div>
+<div class="down mdui-text-center"></div>
+</div>
+</main>
+<script>
+function  setValue(){
+var data =  document.getElementById("url").value;
+let regex = /http[s]?:\/\/[\w.]+[\w\/]*[\w.]*\??[\w=&:\-\+\%]*[/]*/;
+var v =  data.match(regex)[0];
+console.log(v);
+var xmlhttp;
+if(window.XMLHttpRequest){
+  xmlhttp=new XMLHttpRequest();
+  }
+else{// code for IE6, IE5
+xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
+xmlhttp.open("GET","这里填写你的接口地址例如：https://domain.com/video/?url="+v,false);
+xmlhttp.send();
+var jsonObj = JSON.parse(xmlhttp.responseText); 
+console.log(jsonObj);
+var code = jsonObj.code;
+if(code == '200'){
+  mdui.snackbar({
+  message: '解析成功'
+});
+$(".down").html('<h4>'+jsonObj.data.title+' </h4><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.cover+'" target="_blank" download="video">下载封面</a><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.url+'" target="_blank" download="video">下载视频</a><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.music+'" target="_blank" download="video">下载音乐(抖音)</a>');
+}else{
+  mdui.snackbar({
+  message: '解析失败,视频不存在或者链接不正确'
+});
+}
+}
+</script>
+</body>
+</html>
