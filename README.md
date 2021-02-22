@@ -1,6 +1,6 @@
 # Video_spider
 
-新手小白的练手项目 随意Star
+新手小白的练手项目 随意Star 测试链接：http://xn--v6qw21h0gd43u.xn--ses554g/?url=https://v.douyin.com/m2mun2
 
 | 平台 | 状态| 平台 | 状态| 平台 | 状态|
 |  ----  | ----  | ----  | ---- |----|----|
