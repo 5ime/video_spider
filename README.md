@@ -4,7 +4,7 @@
 ## 支持平台
 
 | 平台 | 状态| 平台 | 状态| 平台 | 状态| 平台 | 状态| 平台 | 状态|
-|  ----  | ----  | ----  | ---- |----|----|
+|  ----  | ----  | ----  | ---- |----|----|----|----|----|----|
 | 皮皮虾 | ✔ | 抖音短视频 | ✔ | 火山短视频 | ✔| 皮皮搞笑 | ✔ | 全民K歌 | ✔ |
 | 微视短视频 | ✔ | 微博 | ✔ | 最右 | ✔| vuevlog | ✔ |小咖秀| ✔|
 | 轻视频 | ✔ | 快手短视频 | ✔ | 全民小视频 | ✔|陌陌 | ✔ | Before避风 | ✔ | 开眼 | ✔|
@@ -18,7 +18,7 @@ POST自行测试
 ## 返回数据
 
 | 字段名 | 说明 | 字段名 | 说明 |字段名 | 说明 |字段名 | 说明 |
-|  ----  | ----  | ----  | ---- |---- |---- |
+|  ----  | ----  | ----  | ---- |---- |---- |----|----|
 | author | 视频作者| avatar | 作者头像 | like | 视频点赞量 | time | 视频发布时间 |
 | title | 视频标题 | cover | 视频封面 | url | 视频无水印链接 | sex  | 作者性别 |
 | age | 作者年龄 | city | 所在城市 | uid | 作者id | code | 状态码 |
@@ -42,9 +42,9 @@ POST自行测试
  抖音：http://v.douyin.com/5w5JwL/
  火山：https://share.huoshan.com/hotsoon/s/CpNjM1bqNa8/
  微视：https://h5.weishi.qq.com/weishi/feed/76EaWNkEF1IqtfYVH/
-	  https://isee.weishi.qq.com/ws/app-pages/share/index.html?wxplay=1&id=71sGFcjJ51LczPOQB&collectionid=ai-602fb09fbf6f04f1626a4abc&spid=1579870022402553&qua=v1_and_weishi_8.10.0_588_312027000_d&chid=100081003&pkg=&attach=cp_reserves3_1000370721
+       https://isee.weishi.qq.com/ws/app-pages/share/index.html?wxplay=1&id=71sGFcjJ51LczPOQB&collectionid=ai-602fb09fbf6f04f1626a4abc&spid=1579870022402553&qua=v1_and_weishi_8.10.0_588_312027000_d&chid=100081003&pkg=&attach=cp_reserves3_1000370721
 微博：https://weibo.com/tv/show/1034:4607135049515082?mid=46456489789
-	 https://video.weibo.com/show?fid=1034:4605703432896565
+      https://video.weibo.com/show?fid=1034:4605703432896565
 绿洲：https://m.oasis.weibo.cn/v1/h5/share?sid=4497689997350015&luicode=10001122&lfid=lz_qqfx&bid=4497689997350015
 最右：https://share.izuiyou.com/hybrid/share/post?pid=196279131&zy_to=applink&share_count=1&m=0372f49e6e3c576a56498dc65e626d8f&d=eda64ae931b41c1
 轻视频：https://bbq.bilibili.com/video/?id=1580113023042844866
