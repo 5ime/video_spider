@@ -1,5 +1,5 @@
 # Video_spider
-目前支持15个平台视频去水印下载，欢迎各位Star，提交issues前请先查看[支持的链接](https://github.com/5ime/video_spider#%E6%94%AF%E6%8C%81%E9%93%BE%E6%8E%A5%E6%A0%BC%E5%BC%8F)
+目前支持15个平台视频去水印下载，欢迎各位Star，提交issues前请先查看[支持的链接](https://github.com/5ime/video_spider#%E9%93%BE%E6%8E%A5%E6%A0%BC%E5%BC%8F)
 
 ## 支持平台
 
