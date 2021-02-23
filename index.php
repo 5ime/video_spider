@@ -5,8 +5,9 @@ ini_set('display_errors','off');
 error_reporting(E_ALL || ~E_NOTICE);
 require 'src/video_spider.php';
 $url = $_REQUEST['url'];
-$id = $_REQUEST['id'];
-$basai_id = $_REQUEST['data'];
+$id = $_REQUEST['id']; //微视 isee
+$vid = $_REQUEST['vid']; //全民
+$basai_id = $_REQUEST['data']; //巴塞电影
 use Video_spider\Video;
 $api = new Video;
 if (strpos($url,'pipix') !== false){
@@ -45,6 +46,8 @@ if (strpos($url,'pipix') !== false){
     $arr = $api->xiaokaxiu($url);
 } elseif (strpos($url, 'ippzone') !== false){
     $arr = $api->pipigaoxiao($url);
+} elseif (strpos($url, 'qq.com') !== false){
+    $arr = $api->quanminkge($url);
 } else {
     $arr = array(
         'code'  => 201,
