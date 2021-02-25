@@ -99,17 +99,16 @@ xmlhttp.open("GET","这里填写你的接口地址例如：https://domain.com/vi
 xmlhttp.send();
 var jsonObj = JSON.parse(xmlhttp.responseText); 
 console.log(jsonObj);
-var code = jsonObj.code;
-if(code == '200'){
+var code = jsonObj.data.url;
+if(code !== null){
   mdui.snackbar({
   message: '解析成功'
 });
-$(".down").html('<h4>'+jsonObj.data.title+' </h4><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.cover+'" target="_blank" download="video">下载封面</a><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.url+'" target="_blank" download="video">下载视频</a><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.music.url+'" target="_blank" download="video">下载音乐(抖音)</a>');
+$(".down").html('<h4>'+jsonObj.data.title+' </h4><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.cover+'" target="_blank" download="video">下载封面</a><a class="mdui-btn mdui-btn-raised" href="'+jsonObj.data.url+'" target="_blank" download="video">下载视频</a>');
 }else{
   mdui.snackbar({
   message: '解析失败,视频不存在或者链接不正确'
-});
-}
+});}
 }
 </script>
 </body>
