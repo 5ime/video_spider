@@ -13,6 +13,10 @@
 
 支持GET/POST `url`参数必填
 
+GET测试(随时关闭)：http://xn--v6qw21h0gd43u.xn--ses554g/?url=https://v.douyin.com/m2mun2
+
+POST自行测试
+
 ## 返回数据
 
 | 字段名 | 说明 | 字段名 | 说明 |字段名 | 说明 |字段名 | 说明 |
@@ -36,13 +40,13 @@
 <summary>点我展开</summary>
 
 ```text
- 皮皮虾：https://h5.pipix.com/s/JrQ5yNH/
- 抖音：http://v.douyin.com/5w5JwL/
- 火山：https://share.huoshan.com/hotsoon/s/CpNjM1bqNa8/
- 微视：https://h5.weishi.qq.com/weishi/feed/76EaWNkEF1IqtfYVH/
-       https://isee.weishi.qq.com/ws/app-pages/share/index.html?wxplay=1&id=71sGFcjJ51LczPOQB&collectionid=ai-602fb09fbf6f04f1626a4abc&spid=1579870022402553&qua=v1_and_weishi_8.10.0_588_312027000_d&chid=100081003&pkg=&attach=cp_reserves3_1000370721
+皮皮虾：https://h5.pipix.com/s/JrQ5yNH/
+抖音：http://v.douyin.com/5w5JwL/
+火山：https://share.huoshan.com/hotsoon/s/CpNjM1bqNa8/
+微视：https://h5.weishi.qq.com/weishi/feed/76EaWNkEF1IqtfYVH/
+     https://isee.weishi.qq.com/ws/app-pages/share/index.html?wxplay=1&id=71sGFcjJ51LczPOQB&collectionid=ai-602fb09fbf6f04f1626a4abc&spid=1579870022402553&qua=v1_and_weishi_8.10.0_588_312027000_d&chid=100081003&pkg=&attach=cp_reserves3_1000370721
 微博：https://weibo.com/tv/show/1034:4607135049515082?mid=46456489789
-      https://video.weibo.com/show?fid=1034:4605703432896565
+     https://video.weibo.com/show?fid=1034:4605703432896565
 绿洲：https://m.oasis.weibo.cn/v1/h5/share?sid=4497689997350015&luicode=10001122&lfid=lz_qqfx&bid=4497689997350015
 最右：https://share.izuiyou.com/hybrid/share/post?pid=196279131&zy_to=applink&share_count=1&m=0372f49e6e3c576a56498dc65e626d8f&d=eda64ae931b41c1
 轻视频：https://bbq.bilibili.com/video/?id=1580113023042844866
@@ -64,6 +68,7 @@ Vuevlog：https://v.vuevideo.net/share/post/2586974035524877860
 
 - 2021/2/21 新增微视 isee前缀域名，新增皮皮搞笑 修复微博匹配失败
 - 2021/2/23 修复全民匹配失败，修复避风匹配失败，新增全民K歌
+- 2021/3/26 新增视频解析失败返回`201`参数
 
 ## 免责声明
 
