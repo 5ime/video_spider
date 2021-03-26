@@ -13,10 +13,6 @@
 
 支持GET/POST `url`参数必填
 
-GET测试(随时关闭)：http://xn--v6qw21h0gd43u.xn--ses554g/?url=https://v.douyin.com/m2mun2
-
-POST自行测试
-
 ## 返回数据
 
 | 字段名 | 说明 | 字段名 | 说明 |字段名 | 说明 |字段名 | 说明 |
