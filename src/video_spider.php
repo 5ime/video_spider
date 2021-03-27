@@ -439,7 +439,7 @@ class Video
         $base_music = json_decode($music[1].']',1);
         $video_url = base64_decode($base_video[count($base_video)-1]['main_url']);
         $music_url = base64_decode($base_music[count($base_music)-1]['main_url']);
-        if (!empty($video)){
+        if (empty($video)){
             $arr = array(
                 'code' => 200,
                 'msg' => '解析成功',
