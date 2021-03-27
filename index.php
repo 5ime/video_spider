@@ -48,6 +48,8 @@ if (strpos($url,'pipix') !== false){
     $arr = $api->pipigaoxiao($url);
 } elseif (strpos($url, 'qq.com') !== false){
     $arr = $api->quanminkge($url);
+} elseif (strpos($url, 'ixigua.com') !== false){
+    $arr = $api->xigua($url);
 } else {
     $arr = array(
         'code'  => 201,
