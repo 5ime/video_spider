@@ -2,7 +2,7 @@
 /**
  * @package Video_spider
  * @author  iami233
- * @version 1.0.3
+ * @version 1.0.4
  * @link    https://github.com/5ime/Video_spider
 **/
 
@@ -421,6 +421,43 @@ class Video
         }
     }
 
+        public function xigua($url){
+        $headers = [
+            "cookie:Cookies"
+        ];
+        $text = $this->curl($url,$headers);
+        preg_match('/dynamic_video_list\"\:(.*?)\,\"dynamic_audio_list/',$text,$video);
+        preg_match('/dynamic_audio_list\"\:(.*?)\]/',$text,$music);
+        preg_match('/<title data-react-helmet=\"true\">(.*?) - 西瓜视频<\/title>/',$text,$video_title);
+        preg_match('/name=\"og:image\" content=\"(.*?)"\/>/',$text,$video_cover);
+        preg_match('/data-publish-time=\"(.*?)\">/',$text,$video_time);
+        preg_match('/name=\"author\" content=\"(.*?)\"/',$text,$video_author);
+        preg_match('/avatar_url\":\"(.*?)\.image/',$text,$avatar);
+        preg_match('/video_like_count\"\:(.*?)\,/',$text,$video_like);
+        $video_avatar = str_replace('\\','/',str_replace('u002F','',$avatar[1]));
+        $base_video = json_decode($video[1],1);
+        $base_music = json_decode($music[1].']',1);
+        $video_url = base64_decode($base_video[count($base_video)-1]['main_url']);
+        $music_url = base64_decode($base_music[count($base_music)-1]['main_url']);
+        if (!empty($video)){
+            $arr = array(
+                'code' => 200,
+                'msg' => '解析成功',
+                'data' => array(
+                    'author' => $video_author[1],
+                    'avatar' => $video_avatar.'.jpg',
+                    'like' => $video_like[1],
+                    'time' => $video_time[1],
+                    'title' => $video_title[1],
+                    'cover' => $video_cover[1],
+                    'url' => $video_url,
+                    'music' => $music_url
+                )
+            );
+            return $arr;
+        }
+    }
+
     private function curl($url,$headers=[])
     {
         $header = array( 'User-Agent:Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1');
@@ -468,5 +505,4 @@ class Video
         curl_close($ch);
         return $output;
     }
-
 }
