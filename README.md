@@ -1,5 +1,5 @@
 # Video_spider
-目前支持15个平台视频去水印下载，欢迎各位Star，提交issues前请先查看[支持的链接](https://github.com/5ime/video_spider#%E9%93%BE%E6%8E%A5%E6%A0%BC%E5%BC%8F)
+目前支持16个平台视频去水印下载，欢迎各位Star，提交issues前请先查看[支持的链接](https://github.com/5ime/video_spider#%E9%93%BE%E6%8E%A5%E6%A0%BC%E5%BC%8F)
 
 ## 支持平台
 
@@ -56,6 +56,8 @@ Vuevlog：https://v.vuevideo.net/share/post/2586974035524877860
 小咖秀：https://mobile.xiaokaxiu.com/video?id=84123438
 皮皮搞笑：http://h5.ippzone.com/pp/post/78266943052
 全民k歌：https://kg3.qq.com/node/user/bb132c338e/song/play-edLkcwAsRj?s=bCyoDlbCUhcjXbkQ&shareuid=&topsource=znxvljkwehoit_rqojkwehfguioqef_fnajkgfb&g_f=
+西瓜视频：https://www.ixigua.com/6920910734943584771
+         https://v.ixigua.com/eFYxWw9/
 ```
 
 </details>
