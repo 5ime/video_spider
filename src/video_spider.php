@@ -420,8 +420,13 @@ class Video
             return $arr;
         }
     }
-
-        public function xigua($url){
+    
+    public function xigua($url){
+        if (strpos($url,'v.ixigua.com') != false){
+            $loc = get_headers($url, true)['location'];
+            preg_match('/video\/(.*)\//',$loc,$id);
+            $url = 'https://www.ixigua.com/'.$id[1];
+        }
         $headers = [
             "cookie:Cookies"
         ];
@@ -439,7 +444,7 @@ class Video
         $base_music = json_decode($music[1].']',1);
         $video_url = base64_decode($base_video[count($base_video)-1]['main_url']);
         $music_url = base64_decode($base_music[count($base_music)-1]['main_url']);
-        if (empty($video)){
+        if (!empty($video)){
             $arr = array(
                 'code' => 200,
                 'msg' => '解析成功',
@@ -451,7 +456,9 @@ class Video
                     'title' => $video_title[1],
                     'cover' => $video_cover[1],
                     'url' => $video_url,
-                    'music' => $music_url
+                    'music' => array(
+                        'url' => $music_url
+                    )
                 )
             );
             return $arr;
