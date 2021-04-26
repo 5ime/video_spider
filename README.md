@@ -55,6 +55,7 @@
 Vuevlog：https://v.vuevideo.net/share/post/2586974035524877860
 小咖秀：https://mobile.xiaokaxiu.com/video?id=84123438
 皮皮搞笑：http://h5.ippzone.com/pp/post/78266943052
+          https://h5.pipigx.com/pp/post/444865887503
 全民k歌：https://kg3.qq.com/node/user/bb132c338e/song/play-edLkcwAsRj?s=bCyoDlbCUhcjXbkQ&shareuid=&topsource=znxvljkwehoit_rqojkwehfguioqef_fnajkgfb&g_f=
 西瓜视频：https://www.ixigua.com/6920910734943584771
          https://v.ixigua.com/eFYxWw9/
@@ -68,6 +69,7 @@ Vuevlog：https://v.vuevideo.net/share/post/2586974035524877860
 - 2021/2/23 修复全民匹配失败，修复避风匹配失败，新增全民K歌
 - 2021/3/26 新增视频解析失败返回`201`参数
 - 2021/3/27 新增西瓜视频 请在`video_spider.php`文件第`426`行填写你的西瓜视频`cookies`,无需登录
+- 2021/4/26 新增皮皮搞笑pipigx主域
 
 ## 免责声明
 
