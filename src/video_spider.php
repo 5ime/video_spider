@@ -107,23 +107,24 @@ class Video
     public function weibo($url){
         if (strpos($url,'show?fid=') != false){
             preg_match('/fid=(.*)/',$url,$id);
-            $arr = json_decode($this->curl('https://video.h5.weibo.cn/s/video/object?object_id='.$id[1]),true);
+            $arr = json_decode($this->weibo_curl($id[1]), true);
         } else {
             preg_match('/\d+\:\d+/',$url,$id);
-            $arr = json_decode($this->curl('https://video.h5.weibo.cn/s/video/object?object_id='.$id[0]),true);
+            $arr = json_decode($this->weibo_curl($id[0]), true);
         }
-        $video_url = $arr['data']['object']['stream']['hd_url'];
-        if (!empty($video_url)){
+        if (!empty($arr)){
+            $one = key($arr['data']['Component_Play_Playinfo']['urls']);
+            $video_url = $arr['data']['Component_Play_Playinfo']['urls'][$one];
             $arr = array(
                 'code' => 200,
                 'msg' => '解析成功',
                 'data' => array(
-                    'author' => $arr['data']['object']['author']['screen_name'],
-                    'avatar' => $arr['data']['object']['author']['profile_image_url'],
-                    'time' => $arr['data']['object']['created_at'],
-                    'title' => $arr['data']['object']['summary'],
-                    'cover' => $arr['data']['object']['image']['url'],
-                    'url' => $video_url
+                    'author' => $arr['data']['Component_Play_Playinfo']['author'],
+                    'avatar' => $arr['data']['Component_Play_Playinfo']['avatar'],
+                    'time'   => $arr['data']['Component_Play_Playinfo']['real_date'],
+                    'title'  => $arr['data']['Component_Play_Playinfo']['title'],
+                    'cover'  => $arr['data']['Component_Play_Playinfo']['cover_image'],
+                    'url'    => $video_url
                 )
             );
             return $arr;
@@ -504,6 +505,26 @@ class Video
         curl_setopt($ch, CURLOPT_URL, "http://share.ippzone.com/ppapi/share/fetch_content");
         curl_setopt($ch, CURLOPT_REFERER, "http://share.ippzone.com/ppapi/share/fetch_content");
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        return $output;
+    }
+
+    private function weibo_curl($id)
+    {
+        $cookie = "login_sid_t=6b652c77c1a4bc50cb9d06b24923210d; cross_origin_proto=SSL; WBStorage=2ceabba76d81138d|undefined; _s_tentry=passport.weibo.com; Apache=7330066378690.048.1625663522444; SINAGLOBAL=7330066378690.048.1625663522444; ULV=1625663522450:1:1:1:7330066378690.048.1625663522444:; TC-V-WEIBO-G0=35846f552801987f8c1e8f7cec0e2230; SUB=_2AkMXuScYf8NxqwJRmf8RzmnhaoxwzwDEieKh5dbDJRMxHRl-yT9jqhALtRB6PDkJ9w8OaqJAbsgjdEWtIcilcZxHG7rw; SUBP=0033WrSXqPxfM72-Ws9jqgMF55529P9D9W5Qx3Mf.RCfFAKC3smW0px0; XSRF-TOKEN=JQSK02Ijtm4Fri-YIRu0-vNj";
+        $post_data = "data={\"Component_Play_Playinfo\":{\"oid\":\"$id\"}}";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://weibo.com/tv/api/component?page=/tv/show/".$id);
+        curl_setopt($ch, CURLOPT_COOKIE, $cookie);//设置Cookie
+        curl_setopt($ch, CURLOPT_REFERER, "https://weibo.com/tv/show/".$id);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
