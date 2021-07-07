@@ -2,7 +2,7 @@
 /**
  * @package Video_spider
  * @author  iami233
- * @version 1.0.6
+ * @version 1.0.7
  * @link    https://github.com/5ime/Video_spider
 **/
 
@@ -157,12 +157,13 @@ class Video
     }
 
     public function zuiyou($url){
+        // 2021/7/7 感谢@yzh52521提供最新代码
         $text = $this->curl($url);
-        preg_match('/:<\/span>(.*?)<\/div><\/div><div class=\"ImageBoxII\">/',$text,$video_title);
-        preg_match('/<img alt=\"\" src=\"(.*?)\/id\/(.*?)\/sz/',$text,$video_cover);
-        preg_match('/'.$video_cover[2].',\"(.*)url\":\"(.*)\",\"prior/',$text,$url);
-        $video_url = str_replace('\\','/',str_replace('u002F','',$url[2]));
-        preg_match('/<span class=\"SharePostCard__name\">(.*?)<\/span>/',$text,$video_author);
+        preg_match('/"urlsrc":"(.*?)"/', $text, $video);
+        preg_match('/:<\/span><h1>(.*?)<\/h1><\/div><\/div><div class=\"ImageBoxII\">/', $text, $video_title);
+        preg_match('/<img alt=\"\" src=\"(.*?)\/id\/(.*?)\?w=540/', $text, $video_cover);
+        $video_url = str_replace('\\', '/', str_replace('u002F', '', $video[1]));
+        preg_match('/<span class=\"SharePostCard__name\">(.*?)<\/span>/', $text, $video_author);
         if (!empty($video_url)){ 
             $arr = array(
                 'code' => 200,
@@ -422,40 +423,42 @@ class Video
     }
     
     public function xigua($url){
+        // 2021/7/7 感谢@yzh52521提供最新代码
         if (strpos($url,'v.ixigua.com') != false){
             $loc = get_headers($url, true)['location'];
             preg_match('/video\/(.*)\//',$loc,$id);
             $url = 'https://www.ixigua.com/'.$id[1];
         }
         $headers = [
-            "cookie:Cookies"
+            "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36 ",
+            "cookie:MONITOR_WEB_ID=7892c49b-296e-4499-8704-e47c1b150c18; ixigua-a-s=1; ttcid=af99669b6304453480454f150701d5c226; BD_REF=1; __ac_nonce=060d88ff000a75e8d17eb; __ac_signature=_02B4Z6wo00f01kX9ZpgAAIDAKIBBQUIPYT5F2WIAAPG2ad; ttwid=1%7CcIsVF_3vqSIk4XErhPB0H2VaTxT0tdsTMRbMjrJOPN8%7C1624806049%7C08ce7dd6f7d20506a41ba0a331ef96a6505d96731e6ad9f6c8c709f53f227ab1"
         ];
         $text = $this->curl($url,$headers);
-        preg_match('/dynamic_video_list\"\:(.*?)\,\"dynamic_audio_list/',$text,$video);
-        preg_match('/dynamic_audio_list\"\:(.*?)\]/',$text,$music);
-        preg_match('/<title data-react-helmet=\"true\">(.*?) - 西瓜视频<\/title>/',$text,$video_title);
-        preg_match('/name=\"og:image\" content=\"(.*?)"\/>/',$text,$video_cover);
-        preg_match('/data-publish-time=\"(.*?)\">/',$text,$video_time);
-        preg_match('/name=\"author\" content=\"(.*?)\"/',$text,$video_author);
-        preg_match('/avatar_url\":\"(.*?)\.image/',$text,$avatar);
-        preg_match('/video_like_count\"\:(.*?)\,/',$text,$video_like);
-        $video_avatar = str_replace('\\','/',str_replace('u002F','',$avatar[1]));
-        $base_video = json_decode($video[1],1);
-        $base_music = json_decode($music[1].']',1);
-        $video_url = base64_decode($base_video[count($base_video)-1]['main_url']);
-        $music_url = base64_decode($base_music[count($base_music)-1]['main_url']);
-        if (!empty($video)){
+        preg_match('/<script id=\"SSR_HYDRATED_DATA\">window._SSR_HYDRATED_DATA=(.*?)<\/script>/', $text, $jsondata);
+        $data = json_decode(str_replace('undefined', 'null', $jsondata[1]), 1);
+        $result = $data["anyVideo"]["gidInformation"]["packerData"]["video"];
+        $video = $result["videoResource"]["dash"]["dynamic_video"]["dynamic_video_list"];
+        $base_video_url = $video[3]['main_url'] . $video[3]['backup_url_1'];
+        preg_match('/(.*?)=&vr=/', base64_decode($base_video_url), $video_url);
+        $music = $result["videoResource"]["dash"]["dynamic_video"]["dynamic_audio_list"];
+        $base_music_url = $music[0]['main_url'] . $music[0]['backup_url_1'];
+        $music_url = base64_decode($base_music_url);
+        $video_author = $result['user_info']['name'];
+        $video_avatar = str_replace('300x300.image','300x300.jpg',$result['user_info']['avatar_url']);
+        $video_cover = $data["anyVideo"]["gidInformation"]["packerData"]["pSeries"]["firstVideo"]["middle_image"]["url"];
+        $video_title = $result["title"];
+        if (!empty($url)){
             $arr = array(
                 'code' => 200,
                 'msg' => '解析成功',
                 'data' => array(
-                    'author' => $video_author[1],
-                    'avatar' => $video_avatar.'.jpg',
-                    'like' => $video_like[1],
-                    'time' => $video_time[1],
-                    'title' => $video_title[1],
-                    'cover' => $video_cover[1],
-                    'url' => $video_url,
+                    'author' => $video_author,
+                    'avatar' => $video_avatar,
+                    'like' => $result['video_like_count'],
+                    'time' => $result['video_publish_time'],
+                    'title' => $video_title,
+                    'cover' => $video_cover,
+                    'url' => $video_url[0],
                     'music' => array(
                         'url' => $music_url
                     )
