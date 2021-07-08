@@ -424,7 +424,6 @@ class Video
     }
     
     public function xigua($url){
-        // 2021/7/7 感谢@yzh52521提供最新代码
         if (strpos($url,'v.ixigua.com') != false){
             $loc = get_headers($url, true)['location'];
             preg_match('/video\/(.*)\//',$loc,$id);
@@ -438,12 +437,10 @@ class Video
         preg_match('/<script id=\"SSR_HYDRATED_DATA\">window._SSR_HYDRATED_DATA=(.*?)<\/script>/', $text, $jsondata);
         $data = json_decode(str_replace('undefined', 'null', $jsondata[1]), 1);
         $result = $data["anyVideo"]["gidInformation"]["packerData"]["video"];
-        $video = $result["videoResource"]["dash"]["dynamic_video"]["dynamic_video_list"];
-        $base_video_url = $video[3]['main_url'] . $video[3]['backup_url_1'];
-        preg_match('/(.*?)=&vr=/', base64_decode($base_video_url), $video_url);
-        $music = $result["videoResource"]["dash"]["dynamic_video"]["dynamic_audio_list"];
-        $base_music_url = $music[0]['main_url'] . $music[0]['backup_url_1'];
-        $music_url = base64_decode($base_music_url);
+        $video = $result["videoResource"]["dash"]["dynamic_video"]["dynamic_video_list"][2]["main_url"];
+        preg_match('/(.*?)=&vr=/', base64_decode($video), $video_url);
+        $music = $result["videoResource"]["dash"]["dynamic_video"]["dynamic_audio_list"][0]["main_url"];
+        preg_match('/(.*?)=&vr=/', base64_decode($music), $music_url);
         $video_author = $result['user_info']['name'];
         $video_avatar = str_replace('300x300.image','300x300.jpg',$result['user_info']['avatar_url']);
         $video_cover = $data["anyVideo"]["gidInformation"]["packerData"]["pSeries"]["firstVideo"]["middle_image"]["url"];
@@ -461,8 +458,36 @@ class Video
                     'cover' => $video_cover,
                     'url' => $video_url[0],
                     'music' => array(
-                        'url' => $music_url
+                        'url' => $music_url[0]
                     )
+                )
+            );
+            return $arr;
+        }
+    }
+
+    public function doupai($url)
+    {
+        preg_match("/topic\/(.*?).html/", $url, $d_url);
+        $vid      = $d_url[1];
+        $base_url = "https://v2.doupai.cc/topic/" . $vid . ".json";
+        $data = json_decode($this->curl($base_url),true);
+        $url = $data["data"]["videoUrl"];
+        $title = $data["data"]["name"];
+        $cover = $data["data"]["imageUrl"];
+        $time = $data['data']['createdAt'];
+        $author = $data['data']['userId'];
+        if (!empty($url)){
+            $arr = array(
+                'code' => 200,
+                'msg' => '解析成功',
+                'data' => array(
+                    "title" => $title,
+                    "cover" => $cover,
+                    'time' => $time,
+                    'author' => $author['name'],
+                    'avatar' => $author['avatar'],
+                    "video_url" => $url
                 )
             );
             return $arr;
