@@ -487,7 +487,7 @@ class Video
                     'time' => $time,
                     'author' => $author['name'],
                     'avatar' => $author['avatar'],
-                    "video_url" => $url
+                    "url" => $url
                 )
             );
             return $arr;
