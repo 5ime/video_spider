@@ -50,6 +50,8 @@ if (strpos($url,'pipix') !== false){
     $arr = $api->quanminkge($url);
 } elseif (strpos($url, 'ixigua.com') !== false){
     $arr = $api->xigua($url);
+} elseif (strpos($url, 'doupai') !== false){
+    $arr = $api->doupai($url);
 } else {
     $arr = array(
         'code'  => 201,

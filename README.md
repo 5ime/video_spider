@@ -1,6 +1,6 @@
-![video_spider](https://socialify.git.ci/5ime/video_spider/image?description=1&descriptionEditable=%E6%94%AF%E6%8C%8116%E4%B8%AA%E7%9F%AD%E8%A7%86%E9%A2%91%E5%B9%B3%E5%8F%B0%E5%8E%BB%E6%B0%B4%E5%8D%B0%E4%B8%8B%E8%BD%BD&font=Inter&forks=1&language=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light)
+![video_spider](https://socialify.git.ci/5ime/video_spider/image?description=1&descriptionEditable=%E6%94%AF%E6%8C%8117%E4%B8%AA%E7%9F%AD%E8%A7%86%E9%A2%91%E5%B9%B3%E5%8F%B0%E5%8E%BB%E6%B0%B4%E5%8D%B0%E4%B8%8B%E8%BD%BD&font=Inter&forks=1&language=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light)
 
-目前支持16个平台视频去水印下载，欢迎各位Star，**提交issues时请附带视频链接**。
+目前支持17个平台视频去水印下载，欢迎各位Star，**提交issues时请附带视频链接**。
 
 ## 支持平台
 
@@ -8,8 +8,8 @@
 |  ----  | ----  | ----  | ---- |----|----|----|----|----|----|
 | 皮皮虾 | ✔ | 抖音短视频 | ✔ | 火山短视频 | ✔| 皮皮搞笑 | ✔ | 全民K歌 | ✔ |
 | 微视短视频 | ✔ | 微博 | ✔ | 最右 | ✔| vuevlog | ✔ |小咖秀| ✔|
-| 轻视频 | ✔ | 快手短视频 | ✔ | 全民小视频 | ✔|陌陌 | ✔ | Before避风 | ✔ | 开眼 | ✔|
-| 西瓜视频 | ✔|
+| 轻视频 | ✔ | 快手短视频 | ✔ | 全民小视频 | ✔|陌陌 | ✔ | Before避风 | ✔ |
+| 西瓜视频 | ✔|逗拍|✔|||||||
 
 ## 请求示例
 
@@ -37,10 +37,11 @@
 - 2021/2/23 修复全民匹配失败，修复避风匹配失败，新增全民K歌
 - 2021/3/26 新增视频解析失败返回`201`参数
 - 2021/3/27 新增西瓜视频 <s>请在`video_spider.php`文件第`426`行填写你的西瓜视频`cookies`,无需登录</s>
-- 2021/4/26 新增皮皮搞笑pipigx主域
+- 2021/4/26 新增皮皮搞笑`pipigx`主域
 - 2021/6/22 修复抖音解析失败
 - 2021/7/6 修复皮皮虾解析失败
-- 2021/7/7 修复最右 西瓜视频 微博，感谢 @yzh52521 提供代码
+- 2021/7/7 修复最右，西瓜视频，微博，感谢 @yzh52521 提供代码
+- 2021/7/8 修复西瓜视频，新增逗拍，感谢 @yzh52521 提供代码
 
 ## FAQ
 
