@@ -2,7 +2,7 @@
 /**
  * @package Video_spider
  * @author  iami233
- * @version 1.0.8
+ * @version 1.0.9
  * @link    https://github.com/5ime/Video_spider
 **/
 
@@ -230,6 +230,10 @@ class Video
     }
 
     public function quanmin($id){
+        if(strpos($id,'quanmin.baidu.com/v/')){
+            preg_match('/v\/(.*?)\?/',$id,$vid);
+            $id = $vid[1];
+        }
         $arr = json_decode($this->curl('https://quanmin.hao222.com/wise/growth/api/sv/immerse?source=share-h5&pd=qm_share_mvideo&vid='.$id.'&_format=json'),true);
         if (!empty($arr)){
             $arr = array(
@@ -307,6 +311,10 @@ class Video
 
     public function momo($url){
         preg_match('/new-share-v2\/(.*)\.html/',$url,$id);
+        if (count($id) < 1) {
+            //获取PC端时的feedid
+            preg_match('/momentids=(\w+)/', $url, $id);
+        }
         $post_data = array("feedids" => $id[1],);
         $arr = json_decode($this->post_curl('https://m.immomo.com/inc/microvideo/share/profiles', $post_data),true);
         $video_url = $arr['data']['list'][0]['video']['video_url'];
