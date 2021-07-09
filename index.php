@@ -31,7 +31,11 @@ if (strpos($url,'pipix') !== false){
 } elseif (strpos($url, 'kuaishou') !== false){
     $arr = $api->kuaishou($url);
 } elseif (strpos($url, 'quanmin') !== false){
-    $arr = $api->quanmin($vid);
+    if(empty($vid)){
+        $arr = $api->quanmin($url);
+    }else{
+        $arr = $api->quanmin($vid);
+    }
 } elseif (strpos($url, 'moviebase') !== false){
     $arr = $api->basai($basai_id);
 } elseif (strpos($url, 'hanyuhl') !== false){
