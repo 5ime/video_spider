@@ -60,6 +60,8 @@ if (strpos($url,'pipix') !== false){
     $arr = $api->sixroom($url);
 } elseif(strpos($url,'huya.com')!==false){
     $arr = $api->huya($url);
+} elseif(strpos($url,'pearvideo.com')!==false){
+    $arr = $api->pear($url);
 } else {
     $arr = array(
         'code'  => 201,
