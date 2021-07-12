@@ -8,7 +8,7 @@
 
 namespace Video_spider;
 class Video
-{    
+{
     public function pipixia($url){
         $loc = get_headers($url, true)['Location'];
         preg_match('/item\/(.*)\?/',$loc,$id);
@@ -84,7 +84,7 @@ class Video
         if (strpos($url,'h5.weishi') != false){
             $arr = json_decode($this->curl('https://h5.weishi.qq.com/webapp/json/weishi/WSH5GetPlayPage?feedid='.$id[1]),true);
         } else {
-            $arr = json_decode($this->curl('https://h5.weishi.qq.com/webapp/json/weishi/WSH5GetPlayPage?feedid='.$url),true);   
+            $arr = json_decode($this->curl('https://h5.weishi.qq.com/webapp/json/weishi/WSH5GetPlayPage?feedid='.$url),true);
         }
         $video_url = $arr['data']['feeds'][0]['video_url'];
         if (!empty($video_url)){
@@ -138,9 +138,9 @@ class Video
         preg_match('/<video src=\"([^\"]*)\"/',$text,$video_url);
         preg_match('/<div class=\"nickname\">(.*)<\/div>/',$text,$video_author);
         preg_match('/<a class=\"avatar\"><img src=\"(.*)\?/',$text,$video_author_img);
-        preg_match('/<div class=\"like-count\">(.*)次点赞<\/div>/',$text,$video_like);                  
+        preg_match('/<div class=\"like-count\">(.*)次点赞<\/div>/',$text,$video_like);
         $video_url = $video_url[1];
-        if (!empty($video_url)){                  
+        if (!empty($video_url)){
             $arr = array(
                 'code' => 200,
                 'msg' => '解析成功',
@@ -165,7 +165,7 @@ class Video
         preg_match('/<img alt=\"\" src=\"(.*?)\/id\/(.*?)\?w=540/', $text, $video_cover);
         $video_url = str_replace('\\', '/', str_replace('u002F', '', $video[1]));
         preg_match('/<span class=\"SharePostCard__name\">(.*?)<\/span>/', $text, $video_author);
-        if (!empty($video_url)){ 
+        if (!empty($video_url)){
             $arr = array(
                 'code' => 200,
                 'msg' => '解析成功',
@@ -177,7 +177,7 @@ class Video
                 )
             );
             return $arr;
-        }    
+        }
     }
 
     public function bbq($url){
@@ -198,8 +198,8 @@ class Video
                     'url' => $video_url,
                 )
             );
-            return $arr; 
-        } 
+            return $arr;
+        }
     }
 
     public function kuaishou($url){
@@ -267,7 +267,7 @@ class Video
             return $arr;
         }
     }
-    
+
     public function before($url){
         preg_match('/detail\/(.*)\?/',$url,$id);
         $arr = json_decode($this->curl('https://hlg.xiatou.com/h5/feed/detail?id='.$id[1]),true);
@@ -358,7 +358,7 @@ class Video
                     'like' => $video_like[1],
                     'title' => $video_title[1],
                     "cover" => $video_cover[1],
-                    "url" => $video_url, 
+                    "url" => $video_url,
                 )
             );
             return $arr;
@@ -386,7 +386,7 @@ class Video
             return $arr;
         }
     }
-    
+
     public function pipigaoxiao($url){
         preg_match('/post\/(.*)/', $url, $id);
         $arr = json_decode($this->pipigaoxiao_curl($id[1]), true);
@@ -430,7 +430,7 @@ class Video
             return $arr;
         }
     }
-    
+
     public function xigua($url){
         if (strpos($url,'v.ixigua.com') != false){
             $loc = get_headers($url, true)['location'];
@@ -501,6 +501,73 @@ class Video
             return $arr;
         }
     }
+
+    /**
+     * 6间房
+     */
+    public function sixroom($url)
+    {
+        preg_match(
+            "/http[s]?:\/\/(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+/",
+            $url,
+            $deal_url
+        );
+        $headers = [
+            'user-agent'       => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
+            'x-requested-with' => 'XMLHttpRequest'
+        ];
+        $rows=$this->curl($deal_url[0],$headers);
+        preg_match('/tid: \'(\w+)\',/', $rows, $tid);
+        $base_url = 'https://v.6.cn/message/message_home_get_one.php';
+        $content  = $this->curl($base_url.'?tid='.$tid[1], $headers);
+        $content  = json_decode($content, 1);
+        return [
+            'code' => 200,
+            'msg'  => '解析成功',
+            'data' => [
+                'title'  => $content["content"]["content"][0]["content"]['title'],
+                'cover'  => $content["content"]["content"][0]["content"]['url'],
+                'video'  => $content["content"]["content"][0]["content"]['playurl'],
+                'author' => $content["content"]["content"][0]['alias'],
+                'avatar' => $content["content"]["content"][0]['userpic'],
+            ]
+        ];
+    }
+
+    //虎牙
+    public function huya($url)
+    {
+        preg_match('/\/(\d+).html/', $url, $vid);
+        $api      = 'https://liveapi.huya.com/moment/getMomentContent';
+        $response = $this->curl($api.'?videoId='.$vid[1],[
+            'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36',
+            'referer'    => 'https://v.huya.com/',
+        ]);
+        $content  = json_decode($response, 1);
+        if ($content['status'] === 200) {
+            $url       = $content["data"]["moment"]["videoInfo"]["definitions"][0]["url"];
+            $cover     = $content["data"]["moment"]["videoInfo"]["videoCover"];
+            $title     = $content["data"]["moment"]["videoInfo"]["videoTitle"];
+            $avatarUrl = $content["data"]["moment"]["videoInfo"]["avatarUrl"];
+            $author    = $content["data"]["moment"]["videoInfo"]["nickName"];
+            $time      = $content["data"]["moment"]["cTime"];
+            $like      = $content["data"]["moment"]["favorCount"];
+            return [
+                'code' => 200,
+                'msg'  => '解析成功',
+                'data' => [
+                    'title'     => $title,
+                    'cover'     => $cover,
+                    'video_url' => $url,
+                    'time'      => $time,
+                    'like'      => $like,
+                    'author'    => $author,
+                    'avatar'    => $avatarUrl
+                ]
+            ];
+        }
+    }
+
 
     private function curl($url,$headers=[])
     {

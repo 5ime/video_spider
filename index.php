@@ -1,4 +1,4 @@
-<?php 
+<?php
 header('Access-Control-Allow-Origin:*');
 header('Content-type: application/json');
 ini_set('display_errors','off');
@@ -56,6 +56,10 @@ if (strpos($url,'pipix') !== false){
     $arr = $api->xigua($url);
 } elseif (strpos($url, 'doupai') !== false){
     $arr = $api->doupai($url);
+} elseif(strpos($url,'6.cn')!==false){
+    $arr = $api->sixroom($url);
+} elseif(strpos($url,'huya.com')!==false){
+    $arr = $api->huya($url);
 } else {
     $arr = array(
         'code'  => 201,
