@@ -658,6 +658,56 @@ class Video
         }
     }
 
+    /**
+     * 新片场
+     * @param $url
+     * @return array
+     */
+    public function xinpianchang($url){
+        $api_headers  = [
+            "User-Agent"   => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36",
+            "referer"      => $url,
+            "origin"       => "https://www.xinpianchang.com",
+            "content-type" => "application/json"
+        ];
+        $home_headers = [
+            "User-Agent"                => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36",
+            "upgrade-insecure-requests" => "1"
+        ];
+        $html         = $this->curl($url,$home_headers);
+        preg_match('/var modeServerAppKey = "(.*?)";/', $html, $key);
+        preg_match('/var vid = "(.*?)";/', $html, $vid);
+        $base_url = sprintf("https://mod-api.xinpianchang.com/mod/api/v2/media/%s?appKey=%s&extend=%s", $vid[1],$key[1],"userInfo,userStatus");
+        $response = $this->xinpianchang_curl($base_url,$api_headers,$url);
+        $content  = json_decode($response, 1);
+        if ($content['status'] == 0) {
+            $cover  = $content['data']["cover"];
+            $title  = $content['data']["title"];
+            $videos = $content['data']["resource"]["progressive"];
+            $author = $content['data']['owner']['username'];
+            $avatar = $content['data']['owner']['avatar'];
+            $video  = [];
+            foreach ($videos as $v) {
+                $video[] = ['profile' => $v['profile'], 'url' => $v['url']];
+            }
+            return [
+                'code' => 200,
+                'msg'  => '解析成功',
+                'data' => [
+                    'author' => $author,
+                    'avatar' => $avatar,
+                    'cover'  => $cover,
+                    'title'  => $title,
+                    'url'   => $video
+                ]
+            ];
+        }
+        return [
+            'code' => 200,
+            'msg'  => '解析失败'
+        ];
+    }
+
 
     private function curl($url, $headers = [])
     {
@@ -743,6 +793,23 @@ class Video
             CURLOPT_USERAGENT,
             "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
         );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        return $output;
+    }
+    private function xinpianchang_curl($url,$headers,$referer)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_REFERER, $referer);
+        if (!empty($headers)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

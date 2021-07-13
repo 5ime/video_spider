@@ -62,6 +62,8 @@ if (strpos($url,'pipix') !== false){
     $arr = $api->huya($url);
 } elseif(strpos($url,'pearvideo.com')!==false){
     $arr = $api->pear($url);
+} elseif(strpos($url,'xinpianchang.com')!==false){
+    $arr = $api->xinpianchang($url);
 } else {
     $arr = array(
         'code'  => 201,
