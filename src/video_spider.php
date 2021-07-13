@@ -2,7 +2,7 @@
 /**
  * @package Video_spider
  * @author  iami233
- * @version 1.0.9
+ * @version 1.1.0
  * @link    https://github.com/5ime/Video_spider
  **/
 
