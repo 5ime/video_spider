@@ -736,6 +736,39 @@ class Video
         ];
     }
 
+    public function meipai($url)
+    {
+        $html = $this->get_curl($url);
+        preg_match('/data-video="(.*?)"/', $html, $content);
+        preg_match('/<meta name=\"description\" content="(.*?)"/',$html,$title);
+        $video_bs64=$content[1];
+        $hex        = $this->getHex($video_bs64);
+        $dec        = $this->getDec($hex['hex_1']);
+        $d          = $this->sub_str($hex['str_1'], $dec['pre']);
+        $p          = $this->getPos($d, $dec['tail']);
+        $kk         = $this->sub_str($d, $p);
+        $video      = 'https:' . base64_decode($kk);
+        if ($video_bs64) {
+            return [
+                'code' => 200,
+                'msg'  => '解析成功',
+                'data' => [
+                    "title" => $title[1],
+                    "url"   => $video
+                ]
+            ];
+        }
+    }
+
+    private function get_curl($url)
+    {
+        $con    = curl_init((string)$url);
+        curl_setopt($con, CURLOPT_HEADER, false);
+        curl_setopt($con, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($con, CURLOPT_TIMEOUT, 5000);
+        return curl_exec($con);
+    }
 
     private function acfun_curl($url, $headers = [])
     {
@@ -865,5 +898,44 @@ class Video
         $output = curl_exec($ch);
         curl_close($ch);
         return $output;
+    }
+
+    protected function getHex($url)
+    {
+        $length = strlen($url);
+        $hex_1  = substr($url, 0, 4);
+        $str_1  = substr($url, 4, $length);
+        return [
+            'hex_1' => strrev($hex_1),
+            'str_1' => $str_1
+        ];
+    }
+
+    protected function getDec($hex)
+    {
+        $b      = hexdec($hex);
+        $length = strlen($b);
+        $c      = str_split(substr($b, 0, 2));
+        $d      = str_split(substr($b, 2, $length));
+        return [
+            'pre'  => $c,
+            'tail' => $d,
+        ];
+    }
+
+    protected function sub_str($a, $b)
+    {
+        $length = strlen($a);
+        $k      = $b[0];
+        $c      = substr($a, 0, $k);
+        $d      = substr($a, $k, $b[1]);
+        $temp   = str_replace($d, '', substr($a, $k, $length));
+        return $c . $temp;
+    }
+
+    protected function getPos($a, $b)
+    {
+        $b[0] = strlen($a) - (int)$b[0] - (int)$b[1];
+        return $b;
     }
 }
