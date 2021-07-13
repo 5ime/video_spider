@@ -473,13 +473,13 @@ class Video
             $arr = [
                 'code'   => 200,
                 'msg'    => '解析成功',
-                'author' => $video_title[1],
-                'avatar' => $video_avatar[1],
-                'time'   => $video_time[1],
                 'data'   => [
                     'title' => $video_title[2],
                     'cover' => $video_cover[1],
                     'url'   => $video_url,
+                    'author' => $video_title[1],
+                    'avatar' => $video_avatar[1],
+                    'time'   => $video_time[1],
                 ]
             ];
             return $arr;
@@ -583,7 +583,7 @@ class Video
             'data' => [
                 'title'  => $content["content"]["content"][0]["content"]['title'],
                 'cover'  => $content["content"]["content"][0]["content"]['url'],
-                'video'  => $content["content"]["content"][0]["content"]['playurl'],
+                'url'  => $content["content"]["content"][0]["content"]['playurl'],
                 'author' => $content["content"]["content"][0]['alias'],
                 'avatar' => $content["content"]["content"][0]['userpic'],
             ]
@@ -617,7 +617,7 @@ class Video
                 'data' => [
                     'title'     => $title,
                     'cover'     => $cover,
-                    'video_url' => $url,
+                    'url' => $url,
                     'time'      => $time,
                     'like'      => $like,
                     'author'    => $author,
