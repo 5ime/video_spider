@@ -64,6 +64,8 @@ if (strpos($url,'pipix') !== false){
     $arr = $api->pear($url);
 } elseif(strpos($url,'xinpianchang.com')!==false){
     $arr = $api->xinpianchang($url);
+} elseif(strpos($url,'acfun.cn')!==false){
+    $arr = $api->acfan($url);
 } else {
     $arr = array(
         'code'  => 201,

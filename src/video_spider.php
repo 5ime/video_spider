@@ -663,7 +663,8 @@ class Video
      * @param $url
      * @return array
      */
-    public function xinpianchang($url){
+    public function xinpianchang($url)
+    {
         $api_headers  = [
             "User-Agent"   => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36",
             "referer"      => $url,
@@ -674,11 +675,16 @@ class Video
             "User-Agent"                => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36",
             "upgrade-insecure-requests" => "1"
         ];
-        $html         = $this->curl($url,$home_headers);
+        $html         = $this->curl($url, $home_headers);
         preg_match('/var modeServerAppKey = "(.*?)";/', $html, $key);
         preg_match('/var vid = "(.*?)";/', $html, $vid);
-        $base_url = sprintf("https://mod-api.xinpianchang.com/mod/api/v2/media/%s?appKey=%s&extend=%s", $vid[1],$key[1],"userInfo,userStatus");
-        $response = $this->xinpianchang_curl($base_url,$api_headers,$url);
+        $base_url = sprintf(
+            "https://mod-api.xinpianchang.com/mod/api/v2/media/%s?appKey=%s&extend=%s",
+            $vid[1],
+            $key[1],
+            "userInfo,userStatus"
+        );
+        $response = $this->xinpianchang_curl($base_url, $api_headers, $url);
         $content  = json_decode($response, 1);
         if ($content['status'] == 0) {
             $cover  = $content['data']["cover"];
@@ -698,7 +704,7 @@ class Video
                     'avatar' => $avatar,
                     'cover'  => $cover,
                     'title'  => $title,
-                    'url'   => $video
+                    'url'    => $video
                 ]
             ];
         }
@@ -708,7 +714,47 @@ class Video
         ];
     }
 
+    public function acfan($url)
+    {
+        $headers = [
+            'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
+        ];
+        $html    = $this->acfun_curl($url, $headers);
+        preg_match('/var videoInfo =\s(.*?);/', $html, $info);
+        $videoInfo = json_decode(trim($info[1]), 1);
+        preg_match('/var playInfo =\s(.*?);/', $html, $play);
+        $playInfo = json_decode(trim($play[1]), 1);
+        return [
+            'code' => 200,
+            'msg'  => '解析成功',
+            'data' => [
+                'title' => $videoInfo['title'],
+                'cover' => $videoInfo['cover'],
+                'time'  => $videoInfo['time'],
+                'url'   => $playInfo['streams'][0]['playUrls'][0],
+            ]
+        ];
+    }
 
+
+    private function acfun_curl($url, $headers = [])
+    {
+        $header = ['User-Agent:Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'];
+        $con    = curl_init((string)$url);
+        curl_setopt($con, CURLOPT_HEADER, false);
+        curl_setopt($con, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
+        if (!empty($headers)) {
+            curl_setopt($con, CURLOPT_HTTPHEADER, $headers);
+        } else {
+            curl_setopt($con, CURLOPT_HTTPHEADER, $header);
+        }
+        curl_setopt($con, CURLOPT_FOLLOWLOCATION,1);
+
+        curl_setopt($con, CURLOPT_TIMEOUT, 5000);
+
+        return curl_exec($con);
+    }
     private function curl($url, $headers = [])
     {
         $header = ['User-Agent:Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'];
@@ -802,7 +848,8 @@ class Video
         curl_close($ch);
         return $output;
     }
-    private function xinpianchang_curl($url,$headers,$referer)
+
+    private function xinpianchang_curl($url, $headers, $referer)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
