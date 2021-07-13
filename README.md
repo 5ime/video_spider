@@ -1,4 +1,4 @@
-![video_spider](https://socialify.git.ci/5ime/video_spider/image?description=1&descriptionEditable=%E6%94%AF%E6%8C%8117%E4%B8%AA%E7%9F%AD%E8%A7%86%E9%A2%91%E5%B9%B3%E5%8F%B0%E5%8E%BB%E6%B0%B4%E5%8D%B0%E4%B8%8B%E8%BD%BD&font=Inter&forks=1&language=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light)
+![video_spider](https://socialify.git.ci/5ime/video_spider/image?description=1&descriptionEditable=%E6%94%AF%E6%8C%8121%E4%B8%AA%E7%9F%AD%E8%A7%86%E9%A2%91%E5%B9%B3%E5%8F%B0%E5%8E%BB%E6%B0%B4%E5%8D%B0%E4%B8%8B%E8%BD%BD&font=Inter&forks=1&language=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light)
 
 目前支持21个平台视频去水印下载，欢迎各位Star，**提交issues时请附带视频链接**。
 
@@ -43,7 +43,7 @@
 - 2021/7/6 修复皮皮虾解析失败
 - 2021/7/7 修复最右，西瓜视频，微博，感谢 @yzh52521 提供代码
 - 2021/7/8 修复西瓜视频，新增逗拍，感谢 @yzh52521 提供代码
-- 2021/7/12 新增虎牙/6间房/梨视频
+- 2021/7/12 新增虎牙，6间房，梨视频
 - 2021/7/13 新增新片场视频
 ## FAQ
 
