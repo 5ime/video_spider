@@ -1,6 +1,6 @@
-![video_spider](https://socialify.git.ci/5ime/video_spider/image?description=1&descriptionEditable=%E6%94%AF%E6%8C%8121%E4%B8%AA%E7%9F%AD%E8%A7%86%E9%A2%91%E5%B9%B3%E5%8F%B0%E5%8E%BB%E6%B0%B4%E5%8D%B0%E4%B8%8B%E8%BD%BD&font=Inter&forks=1&language=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light)
+![video_spider](https://socialify.git.ci/5ime/video_spider/image?description=1&descriptionEditable=%E6%94%AF%E6%8C%8123%E4%B8%AA%E7%9F%AD%E8%A7%86%E9%A2%91%E5%B9%B3%E5%8F%B0%E5%8E%BB%E6%B0%B4%E5%8D%B0%E4%B8%8B%E8%BD%BD&font=Inter&forks=1&language=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light)
 
-目前支持21个平台视频去水印下载，欢迎各位Star，**提交issues时请附带视频链接**。
+目前支持23个平台视频去水印下载，欢迎各位Star，**提交issues时请附带视频链接**。
 
 ## 支持平台
 
@@ -10,7 +10,7 @@
 | 微视短视频 | ✔ | 微博 | ✔ | 最右 | ✔| vuevlog | ✔ |小咖秀| ✔|
 | 轻视频 | ✔ | 快手短视频 | ✔ | 全民小视频 | ✔|陌陌 | ✔ | Before避风 | ✔ |
 | 西瓜视频 | ✔|逗拍|✔|虎牙|✔|6间房|✔|梨视频|✔|
-| 新片场 | ✔|||||||||
+| 新片场 | ✔|Acfun|✔|美拍|✔|||||
 
 ## 请求示例
 
@@ -42,9 +42,11 @@
 - 2021/6/22 修复抖音解析失败
 - 2021/7/6 修复皮皮虾解析失败
 - 2021/7/7 修复最右，西瓜视频，微博，感谢 @yzh52521 提供代码
-- 2021/7/8 修复西瓜视频，新增逗拍，感谢 @yzh52521 提供代码
+- 2021/7/8 修复西瓜视频，新增逗拍
 - 2021/7/12 新增虎牙，6间房，梨视频
 - 2021/7/13 新增新片场视频
+- 2021/7/15 update
+- 2021/7/19 新增Acfun，美拍
 ## FAQ
 
 **为什么演示网址界面和`demo`文件夹里的不一样**

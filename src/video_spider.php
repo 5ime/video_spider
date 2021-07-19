@@ -2,9 +2,9 @@
 /**
  * @package Video_spider
  * @author  iami233
- * @version 1.1.0
+ * @version 1.1.2
  * @link    https://github.com/5ime/Video_spider
- **/
+**/
 
 namespace Video_spider;
 
@@ -19,7 +19,7 @@ class Video
             true
         );
         $video_url = $arr['data']['data']['item']['origin_video_download']['url_list'][0]['url'];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'data' => [
@@ -51,7 +51,7 @@ class Video
             $matches
         );
         $video_url = str_replace('&', '&', $matches[1]);
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -82,7 +82,7 @@ class Video
         $arr = json_decode($this->curl('https://share.huoshan.com/api/item/info?item_id=' . $id[1]), true);
         $url = $arr['data']['item_info']['url'];
         preg_match('/video_id=(.*)&line/', $url, $id);
-        if (!empty($id)) {
+        if ($id) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -110,7 +110,7 @@ class Video
             );
         }
         $video_url = $arr['data']['feeds'][0]['video_url'];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -136,7 +136,7 @@ class Video
             preg_match('/\d+\:\d+/', $url, $id);
             $arr = json_decode($this->weibo_curl($id[0]), true);
         }
-        if (!empty($arr)) {
+        if ($arr) {
             $one       = key($arr['data']['Component_Play_Playinfo']['urls']);
             $video_url = $arr['data']['Component_Play_Playinfo']['urls'][$one];
             $arr       = [
@@ -165,7 +165,7 @@ class Video
         preg_match('/<a class=\"avatar\"><img src=\"(.*)\?/', $text, $video_author_img);
         preg_match('/<div class=\"like-count\">(.*)次点赞<\/div>/', $text, $video_like);
         $video_url = $video_url[1];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -184,14 +184,13 @@ class Video
 
     public function zuiyou($url)
     {
-        // 2021/7/7 感谢@yzh52521提供最新代码
         $text = $this->curl($url);
         preg_match('/"urlsrc":"(.*?)"/', $text, $video);
         preg_match('/:<\/span><h1>(.*?)<\/h1><\/div><\/div><div class=\"ImageBoxII\">/', $text, $video_title);
         preg_match('/<img alt=\"\" src=\"(.*?)\/id\/(.*?)\?w=540/', $text, $video_cover);
         $video_url = str_replace('\\', '/', str_replace('u002F', '', $video[1]));
         preg_match('/<span class=\"SharePostCard__name\">(.*?)<\/span>/', $text, $video_author);
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -211,7 +210,7 @@ class Video
         preg_match('/id=(.*)\b/', $url, $id);
         $arr       = json_decode($this->curl('https://bbq.bilibili.com/bbq/app-bbq/sv/detail?svid=' . $id[1]), true);
         $video_url = $arr['data']['play']['file_info'][0]['url'];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -235,12 +234,12 @@ class Video
         $text = $this->curl($loc);
         preg_match('/{\"title\":\"(.*?)\",\"desc/', $text, $video_title);
         preg_match('/poster=\"(.*?)\"/', $text, $video_cover);
-        preg_match('/srcNoMark\":\"(.*?)\"}/', $text, $video_url);
+        preg_match('/srcNoMark\":\"(.*?)\"/', $text, $video_url);
         preg_match('/<div class=\"auth-name\">(.*?)<\/div>/', $text, $video_author);
         preg_match('/<div class=\"auth-avatar\" style=\"background-image:url\((.*?)\)/', $text, $video_avatar);
         preg_match('/timestamp\":(.*?),\"/', $text, $video_time);
         $video_url = $video_url[1];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -269,7 +268,7 @@ class Video
             ),
             true
         );
-        if (!empty($arr)) {
+        if ($arr) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -292,7 +291,7 @@ class Video
             true
         );
         $video_url = $arr[0]['data']['videoUrl'];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -312,7 +311,7 @@ class Video
         preg_match('/detail\/(.*)\?/', $url, $id);
         $arr       = json_decode($this->curl('https://hlg.xiatou.com/h5/feed/detail?id=' . $id[1]), true);
         $video_url = $arr['data'][0]['mediaInfoList'][0]['videoInfo']['url'];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -336,7 +335,7 @@ class Video
         $arr       = json_decode($this->curl('https://baobab.kaiyanapp.com/api/v1/video/' . $id[1] . '?f=web'), true);
         $video     = 'https://baobab.kaiyanapp.com/api/v1/playUrl?vid=' . $id[1] . '&resourceType=video&editionType=default&source=aliyun&playUrlType=url_oss&ptl=true';
         $video_url = get_headers($video, true)["Location"];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -354,7 +353,6 @@ class Video
     {
         preg_match('/new-share-v2\/(.*)\.html/', $url, $id);
         if (count($id) < 1) {
-            //获取PC端时的feedid
             preg_match('/momentids=(\w+)/', $url, $id);
         }
         $post_data = ["feedids" => $id[1],];
@@ -363,7 +361,7 @@ class Video
             true
         );
         $video_url = $arr['data']['list'][0]['video']['video_url'];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -394,7 +392,7 @@ class Video
         preg_match('/<div class="avatarContainer"><img src="(.*?)\"/', $text, $video_avatar);
         preg_match('/<div class=\"likeTitle\">(.*) friends/', $text, $video_like);
         $video_url = $video_url[1];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -445,7 +443,7 @@ class Video
         preg_match('/post\/(.*)/', $url, $id);
         $arr = json_decode($this->pipigaoxiao_curl($id[1]), true);
         $id  = $arr["data"]["post"]["imgs"][0]["id"];
-        if (!empty($id)) {
+        if ($id) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -469,7 +467,7 @@ class Video
         preg_match('/{\"activity_id\":0\,\"avatar\":\"(.*?)\"/', $text, $video_avatar);
         preg_match('/<p class=\"singer_more__time\">(.*?)<\/p>/', $text, $video_time);
         $video_url = $video_url[1];
-        if (!empty($video_url)) {
+        if ($video_url) {
             $arr = [
                 'code'   => 200,
                 'msg'    => '解析成功',
@@ -509,7 +507,7 @@ class Video
         $video_avatar = str_replace('300x300.image', '300x300.jpg', $result['user_info']['avatar_url']);
         $video_cover  = $data["anyVideo"]["gidInformation"]["packerData"]["pSeries"]["firstVideo"]["middle_image"]["url"];
         $video_title  = $result["title"];
-        if (!empty($url)) {
+        if ($url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -541,7 +539,7 @@ class Video
         $cover    = $data["data"]["imageUrl"];
         $time     = $data['data']['createdAt'];
         $author   = $data['data']['userId'];
-        if (!empty($url)) {
+        if ($url) {
             $arr = [
                 'code' => 200,
                 'msg'  => '解析成功',
@@ -557,10 +555,7 @@ class Video
             return $arr;
         }
     }
-
-    /**
-     * 6间房
-     */
+ 
     public function sixroom($url)
     {
         preg_match(
@@ -589,8 +584,7 @@ class Video
             ]
         ];
     }
-
-    //虎牙
+ 
     public function huya($url)
     {
         preg_match('/\/(\d+).html/', $url, $vid);
@@ -626,12 +620,7 @@ class Video
             ];
         }
     }
-
-    /**
-     * 梨视频
-     * @param $url
-     * @return array
-     */
+ 
     public function pear($url)
     {
         $html = $this->curl($url);
@@ -657,12 +646,7 @@ class Video
             ];
         }
     }
-
-    /**
-     * 新片场
-     * @param $url
-     * @return array
-     */
+ 
     public function xinpianchang($url){
         $api_headers  = [
             "User-Agent"   => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36",
@@ -708,7 +692,69 @@ class Video
         ];
     }
 
+    public function acfan($url)
+    {
+        $headers = [
+            'User-Agent:Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'
+        ];
+        $html    = $this->acfun_curl($url, $headers);
+        preg_match('/var videoInfo =\s(.*?);/', $html, $info);
+        $videoInfo = json_decode(trim($info[1]), 1);
+        preg_match('/var playInfo =\s(.*?);/', $html, $play);
+        $playInfo = json_decode(trim($play[1]), 1);
+        if ($html) {
+            $arr = [
+                'code' => 200,
+                'title' => $videoInfo['title'],
+                'cover' => $videoInfo['cover'],
+                'url'   => $playInfo['streams'][0]['playUrls'][0],        
+            ];
+            return $arr;
+        }
+    }
 
+    public function meipai($url)
+    {
+        $headers = [
+             "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36 ",
+        ];
+        $html = $this->curl($url,$headers);
+        preg_match('/data-video="(.*?)"/', $html, $content);
+        preg_match('/<meta name=\"description\" content="(.*?)"/',$html,$title);
+        $video_bs64 = $content[1];
+        $hex        = $this->getHex($video_bs64);
+        $dec        = $this->getDec($hex['hex_1']);
+        $d          = $this->sub_str($hex['str_1'], $dec['pre']);
+        $p          = $this->getPos($d, $dec['tail']);
+        $kk         = $this->sub_str($d, $p);
+        $video      = 'https:' . base64_decode($kk);
+        if ($video_bs64) {
+            return [
+                'code' => 200,
+                "title" => $title[1],
+                "url"   => $video
+            ];
+        }
+    }
+
+
+    private function acfun_curl($url, $headers = [])
+    {
+        $header = ['User-Agent:Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'];
+        $con    = curl_init((string)$url);
+        curl_setopt($con, CURLOPT_HEADER, false);
+        curl_setopt($con, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
+        if (!empty($headers)) {
+            curl_setopt($con, CURLOPT_HTTPHEADER, $headers);
+        } else {
+            curl_setopt($con, CURLOPT_HTTPHEADER, $header);
+        }
+        curl_setopt($con, CURLOPT_FOLLOWLOCATION,1);
+        curl_setopt($con, CURLOPT_TIMEOUT, 5000);
+        return curl_exec($con);
+    }
+    
     private function curl($url, $headers = [])
     {
         $header = ['User-Agent:Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'];
