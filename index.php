@@ -26,6 +26,9 @@ if (strpos($url,'pipix')){
     $arr = $api->lvzhou($url);
 } elseif (strpos($url, 'zuiyou')){
     $arr = $api->zuiyou($url);
+} elseif (strpos($url, 'xiaochuankeji')){
+    $arr = $api->zuiyou($url);
+    
 } elseif (strpos($url, 'bbq.bilibili')){
     $arr = $api->bbq($url);
 } elseif (strpos($url, 'kuaishou')){

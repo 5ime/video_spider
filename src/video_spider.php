@@ -167,9 +167,9 @@ class Video
     public function zuiyou($url)
     {
         $text = $this->curl($url);
-        preg_match('/"urlsrc":"(.*?)"/', $text, $video);
+        preg_match('/fullscreen=\"false\" src=\"(.*?)\"/', $text, $video);
         preg_match('/:<\/span><h1>(.*?)<\/h1><\/div><\/div><div class=\"ImageBoxII\">/', $text, $video_title);
-        preg_match('/<img alt=\"\" src=\"(.*?)\/id\/(.*?)\?w=540/', $text, $video_cover);
+        preg_match('/poster=\"(.*?)\">/', $text, $video_cover);
         $video_url = str_replace('\\', '/', str_replace('u002F', '', $video[1]));
         preg_match('/<span class=\"SharePostCard__name\">(.*?)<\/span>/', $text, $video_author);
         if ($video_url) {
@@ -179,7 +179,7 @@ class Video
                 'data' => [
                     'author' => $video_author[1],
                     'title'  => $video_title[1],
-                    'cover'  => 'https://file.izuiyou.com/img/png/id/' . $video_cover[2] . '/sz/600',
+                    'cover' => $video_cover[1],
                     'url'    => $video_url,
                 ]
             ];
@@ -450,7 +450,7 @@ class Video
     public function xigua($url)
     {
         if (strpos($url, 'v.ixigua.com') != false) {
-            $loc = get_headers($url, true)['location'];
+            $loc = get_headers($url, true)['Location'];
             preg_match('/video\/(.*)\//', $loc, $id);
             $url = 'https://www.ixigua.com/' . $id[1];
         }
