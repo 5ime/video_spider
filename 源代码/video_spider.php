@@ -40,6 +40,8 @@ class Video
         $arr = json_decode($this->curl('https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=' . $id[1]),true);
         preg_match('/href="(.*?)">Found/',$this->curl(str_replace('playwm', 'play',$arr['item_list'][0]["video"]["play_addr"]["url_list"][0])),$matches);
         $video_url = str_replace('&', '&', $matches[1]);
+        if(substr($video_url,4,1)!='s'){
+            $video_url=str_ireplace("http","https",$video_url);};
         if ($video_url) {
             $arr = [
                 'code' => 200,
