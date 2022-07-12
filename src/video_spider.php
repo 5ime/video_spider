@@ -450,7 +450,7 @@ class Video {
         $video_avatar = str_replace('300x300.image', '300x300.jpg', $result['user_info']['avatar_url']);
         $video_cover = $data["anyVideo"]["gidInformation"]["packerData"]["video"]["poster_url"];
         $video_title = $result["title"];
-        if ($url) {
+        if ($video_url) {
             $arr = [
                 'code' => 200, 
                 'msg' => '解析成功', 
