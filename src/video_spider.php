@@ -34,25 +34,27 @@ class Video {
     public function douyin($url) {
         $loc = get_headers($url, true) ['Location'][1];
         preg_match('/video\/(.*)\?/', $loc, $id);
-        $arr = json_decode($this->curl('https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=' . $id[1]), true);
-        preg_match('/href="(.*?)">Found/', $this->curl(str_replace('playwm', 'play', $arr['item_list'][0]["video"]["play_addr"]["url_list"][0])), $matches);
-        $video_url = str_replace('&', '&', $matches[1]);
-        if ($video_url) {
+        // 接口已于失效
+        // $arr = json_decode($this->curl('https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=' . $id[1]), true);
+        $arr = json_decode($this->curl('https://www.iesdouyin.com/aweme/v1/web/aweme/detail/?aweme_id=' . $id[1]), true);
+        if ($arr['status_code']==0) {
             $arr = ['code' => 200, 
             'msg' => '解析成功', 
             'data' => [
-                'author' => $arr['item_list'][0]['author']['nickname'], 
-                'uid' => $arr['item_list'][0]['author']['unique_id'], 
-                'avatar' => $arr['item_list'][0]['author']['avatar_larger']['url_list'][0], 
-                'like' => $arr['item_list'][0]['statistics']['digg_count'], 
-                'time' => $arr['item_list'][0]["create_time"], 
-                'title' => $arr['item_list'][0]['share_info']['share_title'], 
-                'cover' => $arr['item_list'][0]['video']['origin_cover']['url_list'][0], 
-                'url' => $video_url, 'music' => [
-                    'author' => $arr['item_list'][0]['music']['author'], 
-                    'avatar' => $arr['item_list'][0]['music']['cover_large']['url_list'][0], 
-                    'url' => $arr['item_list'][0]['music']['play_url']['url_list'][0], 
-                    ]
+                'author' => $arr['aweme_detail']['author']['nickname'], 
+                'uid' => $arr['aweme_detail']['author']['unique_id'], 
+                'avatar' => $arr['aweme_detail']['music']['avatar_large']['url_list'][0],
+                'like' => $arr['aweme_detail']['statistics']['digg_count'], 
+                'time' => $arr['aweme_detail']["create_time"], 
+                'title' => $arr['aweme_detail']['desc'], 
+                'cover' => $arr['aweme_detail']['video']['origin_cover']['url_list'][0], 
+                'url' => $arr['aweme_detail']['video']['play_addr']['url_list'][0],
+                'musicurl' => $arr['aweme_detail']['music']['play_url']['url_list'][0], 
+                'music' => [
+                    'author' => $arr['aweme_detail']['music']['author'], 
+                    'avatar' => $arr['aweme_detail']['music']['cover_large']['url_list'][0], 
+                    'url' => $arr['aweme_detail']['music']['play_url']['url_list'][0], 
+                ]
                 ]
             ];
             return $arr;
