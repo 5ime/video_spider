@@ -2,9 +2,6 @@
 
 目前支持23个平台视频去水印下载，欢迎各位Star，**提交issues时请附带视频链接**。
 
-GitHub仓库更新进度缓慢，如果需要获取更全面的解析接口支持可以使用 https://api.23bt.cn/ 联系QQ：![ad](https://user-images.githubusercontent.com/31686695/203903389-f446ecfa-8536-4b0a-a85c-8cd647cfd928.png)
-
-
 ## 支持平台
 
 | 平台 | 状态| 平台 | 状态| 平台 | 状态| 平台 | 状态| 平台 | 状态|
