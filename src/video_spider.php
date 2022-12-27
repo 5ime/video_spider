@@ -32,11 +32,12 @@ class Video {
     }
     
     public function douyin($url) {
-        $loc = get_headers($url, true) ['Location'][1];
+        $loc = get_headers($url, true) ['Location'];
         preg_match('/video\/(.*)\?/', $loc, $id);
         // 接口已于失效
         // $arr = json_decode($this->curl('https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=' . $id[1]), true);
-        $arr = json_decode($this->curl('https://www.iesdouyin.com/aweme/v1/web/aweme/detail/?aweme_id=' . $id[1]), true);
+        $num = preg_replace('/[^0-9]/', '', $id[1]);
+        $arr = json_decode($this->curl('https://www.iesdouyin.com/aweme/v1/web/aweme/detail/?aweme_id=' .$num), true);
         if ($arr['status_code']==0) {
             $arr = ['code' => 200, 
             'msg' => '解析成功', 
