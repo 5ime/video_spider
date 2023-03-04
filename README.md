@@ -14,9 +14,11 @@
 
 ## 请求示例
 
-支持GET/POST `url`参数必填
+支持GET/POST `url`参数必填，请优先使用 `POST` 请求，`GET` 请求自行 `urlencode` 编码
 
 ## 返回数据
+
+因为平台众多，所以返回的参数不固定，但 `title`, `cover`, `url` 一定会有
 
 | 字段名 | 说明 | 字段名 | 说明 |字段名 | 说明 |字段名 | 说明 |
 |  ----  | ----  | ----  | ---- |---- |---- |----|----|
@@ -31,24 +33,6 @@
 
 - `demo.html`第`98`行请修改为`你的接口地址`
 - `demo.py`第`7`行请修改为`你的接口地址`
-
-## 更新日志
-
-- 2021/2/21 新增微视 isee前缀域名，新增皮皮搞笑 修复微博匹配失败
-- 2021/2/23 修复全民匹配失败，修复避风匹配失败，新增全民K歌
-- 2021/3/26 新增视频解析失败返回`201`参数
-- 2021/3/27 新增西瓜视频 <s>请在`video_spider.php`文件第`426`行填写你的西瓜视频`cookies`,无需登录</s>
-- 2021/4/26 新增皮皮搞笑`pipigx`主域
-- 2021/6/22 修复抖音解析失败
-- 2021/7/6 修复皮皮虾解析失败
-- 2021/7/7 修复最右，西瓜视频，微博，感谢 @yzh52521 提供代码
-- 2021/7/8 修复西瓜视频，新增逗拍
-- 2021/7/12 新增虎牙，6间房，梨视频
-- 2021/7/13 新增新片场视频
-- 2021/7/15 update
-- 2021/7/19 新增Acfun，美拍
-- 2021/11/25 修复抖音，秒拍，西瓜，最右
-- 2022/7/12 修复最右，西瓜视频，绿洲，快手，感谢 @Suxiaoqinx 提供代码
 
 ## FAQ
 
@@ -67,6 +51,24 @@
 **短视频图集图片去水印**
 
 https://github.com/5ime/images_spider
+
+**抖音X-Bogus校验**
+
+目前使用的 https://github.com/B1gM8c/X-Bogus 提供的服务
+
+你也可以基于我的模板 https://github.com/5ime/Tiktok_Signature 一键部署到 vercel，需要修改的地方如下
+
+```php
+$url = 'https://tiktok.iculture.cc/X-Bogus';
+$data = json_encode(array('url' => 'https://www.douyin.com/aweme/v1/web/aweme/detail/?aweme_id=' . $id[0] . '&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333','userAgent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'));
+$header = array('Content-Type: application/json');
+$url = json_decode($this->curl($url, $data, $header), true)['param'];
+// 改为
+$url = '你的 vercel 地址';
+$data = json_encode(array('url' => 'https://www.douyin.com/aweme/v1/web/aweme/detail/?aweme_id=' . $id[0] . '&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333','userAgent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'));
+$header = array('Content-Type: application/json');
+$url = json_decode($this->curl($url, $data, $header), true)['data']['url'];
+```
 
 ## 免责声明
 

@@ -3,7 +3,7 @@
 /**
  * @package Video_spider
  * @author  iami233
- * @version 1.1.4
+ * @version 1.2.0
  * @link    https://github.com/5ime/Video_spider
  *
 **/
@@ -32,81 +32,46 @@ class Video {
     }
     
     public function douyin($url) {
-        $loc = get_headers($url, true) ['Location'];
-        preg_match('/video\/(.*)\?/', $loc, $id);
-        $num = preg_replace('/[^0-9]/', '', $id[1]);
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-        //你也可以选择部署本地接口，生成X-Bogus，开源地址 https://github.com/B1gM8c/X-Bogus
-           CURLOPT_URL => 'https://tiktok.iculture.cc/X-Bogus',
-           CURLOPT_RETURNTRANSFER => true,
-           CURLOPT_ENCODING => '',
-           CURLOPT_MAXREDIRS => 10,
-           CURLOPT_TIMEOUT => 0,
-           CURLOPT_FOLLOWLOCATION => true,
-           CURLOPT_SSL_VERIFYPEER => false,
-           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-           CURLOPT_CUSTOMREQUEST => 'POST',
-           CURLOPT_POSTFIELDS =>'{
-            "url":"https://www.douyin.com/aweme/v1/web/aweme/detail/?aweme_id='.$num.'&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333",
-            "user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
-        }',
-           CURLOPT_HTTPHEADER => array(
-              'User-Agent: FancyPig',
-              'Content-Type: application/json',
-              'Accept: */*',
-              'Host: tiktok.iculture.cc',
-              'Connection: keep-alive'
-           ),
-        ));
+        $loc = get_headers($url, true)['Location'];
+        preg_match('/[0-9]+/', $loc, $id);
+        if (empty($id)) {
+            preg_match('/[0-9]+/', $url, $id);
+        }
         
-        $json_array= json_decode(curl_exec($curl));
-        curl_close($curl);
-        $new_url = $json_array->param;
+        // 关于这里的第三方接口问题 请查看 https://github.com/5ime/video_spider#faq
+        $url = 'https://tiktok.iculture.cc/X-Bogus';
+        $data = json_encode(array('url' => 'https://www.douyin.com/aweme/v1/web/aweme/detail/?aweme_id=' . $id[0] . '&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333','user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'));
+        $header = array('Content-Type: application/json');
+        $url = json_decode($this->curl($url, $header, $data), true)['param'];
+        
         $msToken = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 107);
-        
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-           CURLOPT_URL => $new_url,
-           CURLOPT_RETURNTRANSFER => true,
-           CURLOPT_ENCODING => '',
-           CURLOPT_MAXREDIRS => 10,
-           CURLOPT_TIMEOUT => 0,
-           CURLOPT_FOLLOWLOCATION => true,
-           CURLOPT_SSL_VERIFYPEER => false,
-           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-           CURLOPT_CUSTOMREQUEST => 'GET',
-           CURLOPT_HTTPHEADER => array(
-              'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
-              'Referer: https://www.douyin.com/',
-              'Cookie: msToken='.$msToken.';odin_tt=324fb4ea4a89c0c05827e18a1ed9cf9bf8a17f7705fcc793fec935b637867e2a5a9b8168c885554d029919117a18ba69; ttwid=1%7CWBuxH_bhbuTENNtACXoesI5QHV2Dt9-vkMGVHSRRbgY%7C1677118712%7C1d87ba1ea2cdf05d80204aea2e1036451dae638e7765b8a4d59d87fa05dd39ff; bd_ticket_guard_client_data=eyJiZC10aWNrZXQtZ3VhcmQtdmVyc2lvbiI6MiwiYmQtdGlja2V0LWd1YXJkLWNsaWVudC1jc3IiOiItLS0tLUJFR0lOIENFUlRJRklDQVRFIFJFUVVFU1QtLS0tLVxyXG5NSUlCRFRDQnRRSUJBREFuTVFzd0NRWURWUVFHRXdKRFRqRVlNQllHQTFVRUF3d1BZbVJmZEdsamEyVjBYMmQxXHJcbllYSmtNRmt3RXdZSEtvWkl6ajBDQVFZSUtvWkl6ajBEQVFjRFFnQUVKUDZzbjNLRlFBNUROSEcyK2F4bXAwNG5cclxud1hBSTZDU1IyZW1sVUE5QTZ4aGQzbVlPUlI4NVRLZ2tXd1FJSmp3Nyszdnc0Z2NNRG5iOTRoS3MvSjFJc3FBc1xyXG5NQ29HQ1NxR1NJYjNEUUVKRGpFZE1Cc3dHUVlEVlIwUkJCSXdFSUlPZDNkM0xtUnZkWGxwYmk1amIyMHdDZ1lJXHJcbktvWkl6ajBFQXdJRFJ3QXdSQUlnVmJkWTI0c0RYS0c0S2h3WlBmOHpxVDRBU0ROamNUb2FFRi9MQnd2QS8xSUNcclxuSURiVmZCUk1PQVB5cWJkcytld1QwSDZqdDg1czZZTVNVZEo5Z2dmOWlmeTBcclxuLS0tLS1FTkQgQ0VSVElGSUNBVEUgUkVRVUVTVC0tLS0tXHJcbiJ9',
-              'Accept: */*',
-              'Host: www.douyin.com',
-              'Connection: keep-alive'
-           ),
-        ));
-        $arr = json_decode(curl_exec($curl), true);
-        curl_close($curl);
-        if ($arr['status_code']==0) {
-            $arr = ['code' => 200, 
-            'msg' => '解析成功', 
-                'author' => $arr['aweme_detail']['author']['nickname'], 
-                'uid' => $arr['aweme_detail']['author']['unique_id'], 
-                'avatar' => $arr['aweme_detail']['music']['avatar_large']['url_list'][0],
-                'like' => $arr['aweme_detail']['statistics']['digg_count'], 
-                'time' => $arr['aweme_detail']["create_time"], 
-                'title' => $arr['aweme_detail']['desc'], 
-                'cover' => $arr['aweme_detail']['video']['origin_cover']['url_list'][0], 
-                'url' => $arr['aweme_detail']['video']['play_addr']['url_list'][0],
-                'musicurl' => $arr['aweme_detail']['music']['play_url']['url_list'][0], 
-                'music' => [
-                    'author' => $arr['aweme_detail']['music']['author'], 
-                    'avatar' => $arr['aweme_detail']['music']['cover_large']['url_list'][0], 
-                    'url' => $arr['aweme_detail']['music']['play_url']['url_list'][0], 
-                ]
-            ];
+        $header = array('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', 'Referer: https://www.douyin.com/', 'Cookie: msToken='.$msToken.';odin_tt=324fb4ea4a89c0c05827e18a1ed9cf9bf8a17f7705fcc793fec935b637867e2a5a9b8168c885554d029919117a18ba69; ttwid=1%7CWBuxH_bhbuTENNtACXoesI5QHV2Dt9-vkMGVHSRRbgY%7C1677118712%7C1d87ba1ea2cdf05d80204aea2e1036451dae638e7765b8a4d59d87fa05dd39ff; bd_ticket_guard_client_data=eyJiZC10aWNrZXQtZ3VhcmQtdmVyc2lvbiI6MiwiYmQtdGlja2V0LWd1YXJkLWNsaWVudC1jc3IiOiItLS0tLUJFR0lOIENFUlRJRklDQVRFIFJFUVVFU1QtLS0tLVxyXG5NSUlCRFRDQnRRSUJBREFuTVFzd0NRWURWUVFHRXdKRFRqRVlNQllHQTFVRUF3d1BZbVJmZEdsamEyVjBYMmQxXHJcbllYSmtNRmt3RXdZSEtvWkl6ajBDQVFZSUtvWkl6ajBEQVFjRFFnQUVKUDZzbjNLRlFBNUROSEcyK2F4bXAwNG5cclxud1hBSTZDU1IyZW1sVUE5QTZ4aGQzbVlPUlI4NVRLZ2tXd1FJSmp3Nyszdnc0Z2NNRG5iOTRoS3MvSjFJc3FBc1xyXG5NQ29HQ1NxR1NJYjNEUUVKRGpFZE1Cc3dHUVlEVlIwUkJCSXdFSUlPZDNkM0xtUnZkWGxwYmk1amIyMHdDZ1lJXHJcbktvWkl6ajBFQXdJRFJ3QXdSQUlnVmJkWTI0c0RYS0c0S2h3WlBmOHpxVDRBU0ROamNUb2FFRi9MQnd2QS8xSUNcclxuSURiVmZCUk1PQVB5cWJkcytld1QwSDZqdDg1czZZTVNVZEo5Z2dmOWlmeTBcclxuLS0tLS1FTkQgQ0VSVElGSUNBVEUgUkVRVUVTVC0tLS0tXHJcbiJ9');
+
+        $arr = json_decode($this->curl($url, $header), true);
+        $video_url = $arr['aweme_detail']['video']['play_addr']['url_list'][0];
+
+        if (empty($video_url)) {
+            $arr = array('code' => 201, 'msg' => '解析失败');
             return $arr;
         }
+
+        $arr = array('code' => 200, 
+        'msg' => '解析成功', 
+            'author' => $arr['aweme_detail']['author']['nickname'], 
+            'uid' => $arr['aweme_detail']['author']['unique_id'], 
+            'avatar' => $arr['aweme_detail']['music']['avatar_large']['url_list'][0],
+            'like' => $arr['aweme_detail']['statistics']['digg_count'], 
+            'time' => $arr['aweme_detail']["create_time"], 
+            'title' => $arr['aweme_detail']['desc'], 
+            'cover' => $arr['aweme_detail']['video']['origin_cover']['url_list'][0], 
+            'url' => $arr['aweme_detail']['video']['play_addr']['url_list'][0],
+            'music' => array(
+                'author' => $arr['aweme_detail']['music']['author'], 
+                'avatar' => $arr['aweme_detail']['music']['cover_large']['url_list'][0], 
+                'url' => $arr['aweme_detail']['music']['play_url']['url_list'][0], 
+            )
+        );
+        return $arr;
     }
 
     public function huoshan($url) {
@@ -724,21 +689,25 @@ class Video {
         return curl_exec($con);
     }
 
-    private function curl($url, $headers = []) {
-        $header = ['User-Agent:Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'];
+    private function curl($url, $header = array(), $data = array()) {
         $con = curl_init((string)$url);
         curl_setopt($con, CURLOPT_HEADER, false);
         curl_setopt($con, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
-        if (!empty($headers)) {
-            curl_setopt($con, CURLOPT_HTTPHEADER, $headers);
-        } else {
+        curl_setopt($con, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($con, CURLOPT_AUTOREFERER, 1);
+        if (isset($header)) {
             curl_setopt($con, CURLOPT_HTTPHEADER, $header);
+        }
+        if (isset($data)) {
+            curl_setopt($con, CURLOPT_POST, true);
+            curl_setopt($con, CURLOPT_POSTFIELDS, $data);
         }
         curl_setopt($con, CURLOPT_TIMEOUT, 5000);
         $result = curl_exec($con);
         return $result;
     }
+    
 
     private function post_curl($url, $post_data) {
         $postdata = http_build_query($post_data);
