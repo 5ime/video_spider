@@ -692,7 +692,7 @@ class Video {
         return curl_exec($con);
     }
 
-    private function curl($url, $header = array(), $data = array()) {
+    private function curl($url, $header = null, $data = null) {
         $con = curl_init((string)$url);
         curl_setopt($con, CURLOPT_HEADER, false);
         curl_setopt($con, CURLOPT_SSL_VERIFYPEER, false);
