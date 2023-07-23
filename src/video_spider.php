@@ -165,7 +165,7 @@ class Video {
                     'like' => $video_like[1], 
                     'title' => $video_title[1], 
                     'cover' => $video_cover[1], 
-                    'url' => $video_url[1], 
+                    'url' => str_replace('amp;', '', $video_url[1]),
                     ]
                 ];
             return $arr;
